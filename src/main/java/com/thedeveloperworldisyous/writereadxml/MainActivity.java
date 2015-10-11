@@ -25,7 +25,9 @@ import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
+import com.thedeveloperworldisyous.writereadxml.adapters.ListAdapter;
 import com.thedeveloperworldisyous.writereadxml.models.Actor;
 import com.thedeveloperworldisyous.writereadxml.models.Film;
 import com.thedeveloperworldisyous.writereadxml.utils.Utils;
@@ -40,6 +42,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private static final String ns = null;
 
     private Button mReadButton;
+    private ListView mListView;
 
 
     @Override
@@ -49,6 +52,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         Button writeButton = (Button) findViewById(R.id.activity_main_write);
         mReadButton = (Button) findViewById(R.id.activity_main_read);
+        mListView = (ListView) findViewById(R.id.activity_main_list);
 
         writeButton.setOnClickListener(this);
         mReadButton.setOnClickListener(this);
@@ -248,6 +252,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
             parser.setInput(inputStream, null);
             parser.nextTag();
             List<Film> filmsList =  readDoc(parser);
+
+            ListAdapter adapter = new ListAdapter(filmsList, this);
+            mListView.setAdapter(adapter);
 
             inputStream.close();
         } catch (FileNotFoundException e) {

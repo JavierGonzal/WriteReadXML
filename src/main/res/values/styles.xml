@@ -5,4 +5,19 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="titleText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/navy</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+    <style name="normalText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/yellow</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">10dp</item>
+    </style>
+
 </resources>

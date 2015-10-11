@@ -18,5 +18,10 @@
         android:layout_below="@+id/activity_main_write"
         android:text="@string/activity_main_read"
         android:enabled="false"/>
+    <ListView
+        android:id="@+id/activity_main_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_main_read"/>
 
 </RelativeLayout>

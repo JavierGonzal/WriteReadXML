@@ -9,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,8 @@ import org.xmlpull.v1.XmlSerializer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.widget.Button;
 import com.thedeveloperworldisyous.writereadxml.models.Actor;
 import com.thedeveloperworldisyous.writereadxml.models.Film;
 import com.thedeveloperworldisyous.writereadxml.utils.Utils;
+import com.thedeveloperworldisyous.writereadxml.utils.Work;
 
 public class MainActivity extends Activity implements View.OnClickListener{
 
@@ -202,17 +204,40 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        Message message = new Message();
         switch (v.getId()) {
             case R.id.activity_main_write:
-                writeXml(createFilms());
+
+
+                message.what = Work.WRITE_XML;
+                handler.sendMessage(message);
+
+
+
                 mReadButton.setEnabled(true);
                 break;
 
             case R.id.activity_main_read:
-                readFilm();
+                message.what = Work.READ_XML;
+                handler.sendMessage(message);
                 break;
         }
     }
+
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Work.READ_XML:
+                    readFilm();
+                    break;
+
+                case Work.WRITE_XML:
+                    writeXml(createFilms());
+                    break;
+            }
+        }
+    };
 
     public void readFilm() {
         try {
@@ -223,7 +248,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
             parser.setInput(inputStream, null);
             parser.nextTag();
             List<Film> filmsList =  readDoc(parser);
-            Log.d("", filmsList.toString());
+
             inputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

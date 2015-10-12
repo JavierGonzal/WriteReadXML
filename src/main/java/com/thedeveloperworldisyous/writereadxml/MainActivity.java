@@ -284,6 +284,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private Film readFilms(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "film");
         String title = null;
+
+        for(int x=0; x<parser.getAttributeCount(); x++) {
+            if (parser.getAttributeName(x).equals("title")) {
+                title = parser.getAttributeValue(x);
+            }
+        }
+
         String runningTime = null;
         String country = null;
         String director = null;
@@ -293,9 +300,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 continue;
             }
             String name = parser.getName();
-            if (name.equals("title")) {
-                title = readTitle(parser);
-            } else if (name.equals("runningTime")) {
+            if (name.equals("runningTime")) {
                 runningTime = readRunningTime(parser);
             } else if (name.equals("country")) {
                 country = readCountry(parser);
@@ -306,13 +311,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
             }
         }
         return new Film( title, runningTime, country, director);
-    }
-
-    private String readTitle(XmlPullParser parser) throws IOException, XmlPullParserException {
-        parser.require(XmlPullParser.START_TAG, ns, "title");
-        String title = readText(parser);
-        parser.require(XmlPullParser.END_TAG, ns, "title");
-        return title;
     }
 
     private String readRunningTime(XmlPullParser parser) throws IOException, XmlPullParserException {

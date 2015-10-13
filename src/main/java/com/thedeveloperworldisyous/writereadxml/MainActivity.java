@@ -164,22 +164,24 @@ public class MainActivity extends Activity implements View.OnClickListener{
         Film filmObject;
         for (int i=0; i<films.size(); i++) {
             filmObject = films.get(i);
-            xmlSerializer.startTag(null, film);
-            xmlSerializer.attribute(null, title, filmObject.getTitle());
+            xmlSerializer.startTag(ns, film);
+            xmlSerializer.attribute(ns, title, filmObject.getTitle());
 
-            xmlSerializer.startTag(null, runningTime);
+            xmlSerializer.startTag(ns, runningTime);
             xmlSerializer.text(filmObject.getRunningTime());
-            xmlSerializer.endTag(null, runningTime);
+            xmlSerializer.endTag(ns, runningTime);
 
-            xmlSerializer.startTag(null, country);
+            xmlSerializer.startTag(ns, country);
             xmlSerializer.text(filmObject.getCountry());
-            xmlSerializer.endTag(null, country);
+            xmlSerializer.endTag(ns, country);
 
-            xmlSerializer.startTag(null, director);
+            xmlSerializer.startTag(ns, director);
             xmlSerializer.text(filmObject.getDirector());
-            xmlSerializer.endTag(null, director);
+            xmlSerializer.endTag(ns, director);
 
+            xmlSerializer.startTag(ns, cast);
             insertCast(xmlSerializer, filmObject.getCast());
+            xmlSerializer.endTag(ns, cast);
 
             xmlSerializer.endTag(null, film);
         }

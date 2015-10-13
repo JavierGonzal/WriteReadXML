@@ -57,8 +57,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         writeButton.setOnClickListener(this);
         mReadButton.setOnClickListener(this);
 
-        // check if external storage is available so that we can dump our PDF
-    // file there
+        // check if external storage is available so that we can dump our PDF file there
         if (!Utils.isExternalStorageAvailable() || Utils.isExternalStorageReadOnly()) {
             Log.d("Main","External Storage not available or you don't have permission to write");
 

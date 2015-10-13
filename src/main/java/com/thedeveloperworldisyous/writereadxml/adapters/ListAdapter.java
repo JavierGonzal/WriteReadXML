@@ -9,8 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.thedeveloperworldisyous.writereadxml.R;
+import com.thedeveloperworldisyous.writereadxml.models.Actor;
 import com.thedeveloperworldisyous.writereadxml.models.Film;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +53,7 @@ public class ListAdapter extends BaseAdapter {
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.title = (TextView) rowView.findViewById(R.id.row_list_title);
             viewHolder.director = (TextView) rowView.findViewById(R.id.row_list_director);
+            viewHolder.cast = (TextView) rowView.findViewById(R.id.row_list_cast);
             rowView.setTag(viewHolder);
         }
 
@@ -58,6 +61,17 @@ public class ListAdapter extends BaseAdapter {
         ViewHolder holder = (ViewHolder) rowView.getTag();
         holder.title.setText(mListFilm.get(position).getTitle());
         holder.director.setText(mListFilm.get(position).getDirector());
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+        List<Actor> castList = mListFilm.get(position).getCast();
+        for (int i=0; i<castList.size(); i++) {
+            stringBuilder.append(castList.get(i).getName());
+            stringBuilder.append(" ");
+            stringBuilder.append(castList.get(i).getSurname());
+            stringBuilder.append(", ");
+        }
+        holder.cast.setText(stringBuilder.toString());
 
         return rowView;
     }

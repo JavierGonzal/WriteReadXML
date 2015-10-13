@@ -8,4 +8,5 @@ import android.widget.TextView;
 public class ViewHolder {
     public TextView title;
     public TextView director;
+    public TextView cast;
 }

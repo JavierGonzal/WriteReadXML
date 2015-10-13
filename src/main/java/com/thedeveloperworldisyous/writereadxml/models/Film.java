@@ -11,15 +11,15 @@ public class Film {
     String runningTime;
     String country;
     String director;
-//    List<Actor> cast;
+    List<Actor> cast;
 
-//    public Film(String title, String runningTime, String country, String director, List<Actor> cast) {
-//        this.title = title;
-//        this.runningTime = runningTime;
-//        this.country = country;
-//        this.director = director;
-//        this.cast = cast;
-//    }
+    public Film(String title, String runningTime, String country, String director, List<Actor> cast) {
+        this.title = title;
+        this.runningTime = runningTime;
+        this.country = country;
+        this.director = director;
+        this.cast = cast;
+    }
 
 
     public Film(String title, String runningTime, String country, String director) {
@@ -61,11 +61,11 @@ public class Film {
         this.director = director;
     }
 
-//    public List<Actor> getCast() {
-//        return cast;
-//    }
-//
-//    public void setCast(List<Actor> cast) {
-//        this.cast = cast;
-//    }
+    public List<Actor> getCast() {
+        return cast;
+    }
+
+    public void setCast(List<Actor> cast) {
+        this.cast = cast;
+    }
 }

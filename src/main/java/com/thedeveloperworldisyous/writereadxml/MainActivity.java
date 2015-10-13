@@ -76,38 +76,37 @@ public class MainActivity extends Activity implements View.OnClickListener{
         Actor actor3 = new Actor("Michelle", "Pfeiffer");
         Actor actor4 = new Actor("Mary Elizabeth", "Mastrantonio");
 
-        List<Actor> cast = new ArrayList<Actor>();
-        cast.add(actor1);
-        cast.add(actor2);
-        cast.add(actor3);
-        cast.add(actor4);
-//        Film film = new Film("Scarface", "163 min.", "USA", "Brian De Palma", cast);
-        Film filmScarface = new Film("Scarface", "163 min.", "USA", "Brian De Palma");
+        List<Actor> castScarface = new ArrayList<Actor>();
+        castScarface.add(actor1);
+        castScarface.add(actor2);
+        castScarface.add(actor3);
+        castScarface.add(actor4);
+        Film filmScarface = new Film("Scarface", "163 min.", "USA", "Brian De Palma", castScarface);
 
         Actor actor12 = new Actor("Rupert", "Friend");
         Actor actor22 = new Actor("Zachary", "Quinto");
         Actor actor32 = new Actor("Hannah", "Ware");
         Actor actor42 = new Actor("Ciarán", "Hinds");
 
-        List<Actor> cast1 = new ArrayList<Actor>();
-        cast.add(actor12);
-        cast.add(actor22);
-        cast.add(actor32);
-        cast.add(actor42);
-//        Film film1 = new Film("Hitman", "96 min.", "USA", "Aleksander Bach", cast1);
-        Film filmHitman = new Film("Hitman", "96 min.", "USA", "Aleksander Bach");
+        List<Actor> castHitman  = new ArrayList<Actor>();
+        castHitman.add(actor12);
+        castHitman.add(actor22);
+        castHitman.add(actor32);
+        castHitman.add(actor42);
+        Film filmHitman = new Film("Hitman", "96 min.", "USA", "Aleksander Bach", castHitman);
+
+
         Actor actor11 = new Actor("Robert", "Redford");
         Actor actor21 = new Actor("Meryl", "Streep");
         Actor actor31 = new Actor("Klaus Maria", "Brandauer");
         Actor actor41 = new Actor("Michael", "Kitchen");
 
-        List<Actor> cast11 = new ArrayList<Actor>();
-        cast.add(actor11);
-        cast.add(actor21);
-        cast.add(actor31);
-        cast.add(actor41);
-//        Film film11 = new Film("Out of Africa", "160 min.", "USA", "Sydney Pollack", cast11);
-        Film filmAfrica = new Film("Out of Africa", "160 min.", "USA", "Sydney Pollack");
+        List<Actor> castAfrica = new ArrayList<Actor>();
+        castAfrica.add(actor11);
+        castAfrica.add(actor21);
+        castAfrica.add(actor31);
+        castAfrica.add(actor41);
+        Film filmAfrica = new Film("Out of Africa", "160 min.", "USA", "Sydney Pollack", castAfrica);
 
         List<Film> listFilms = new ArrayList<Film>();
         listFilms.add(filmScarface);
@@ -180,9 +179,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
             xmlSerializer.text(filmObject.getDirector());
             xmlSerializer.endTag(null, director);
 
-//            xmlSerializer.startTag(null, director);
-//            insertCast(xmlSerializer, filmObject.getCast());
-//            xmlSerializer.endTag(null, director);
+            insertCast(xmlSerializer, filmObject.getCast());
 
             xmlSerializer.endTag(null, film);
         }
@@ -294,6 +291,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         String runningTime = null;
         String country = null;
         String director = null;
+        List<Actor> cast = new ArrayList<Actor>();
 
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -306,11 +304,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 country = readCountry(parser);
             } else if (name.equals("director")) {
                 director = readDirector(parser);
+            } else if (name.equals("cast")) {
+                cast = readCast(parser);
             } else {
                 skip(parser);
             }
         }
-        return new Film( title, runningTime, country, director);
+        return new Film( title, runningTime, country, director, cast);
     }
 
     private String readRunningTime(XmlPullParser parser) throws IOException, XmlPullParserException {
@@ -332,6 +332,44 @@ public class MainActivity extends Activity implements View.OnClickListener{
         String director = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "director");
         return director;
+    }
+
+    private List<Actor> readCast(XmlPullParser parser) throws IOException, XmlPullParserException {
+        List<Actor> listActor= new ArrayList<Actor>();
+        parser.require(XmlPullParser.START_TAG, ns, "cast");
+
+        String nameActor = null;
+        String surnameActor = null;
+
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String nameParser = parser.getName();
+            if (nameParser.equals("name")) {
+                nameActor = readNameActor(parser);
+            } else if(nameParser.equals("surname")) {
+                surnameActor = readSurnameActor(parser);
+            } else {
+                skip(parser);
+            }
+            listActor.add(new Actor(nameActor, surnameActor));
+        }
+        return listActor;
+    }
+
+    private String readNameActor(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, "name");
+        String nameActor = readText(parser);
+        parser.require(XmlPullParser.END_TAG, ns, "name");
+        return nameActor;
+    }
+
+    private String readSurnameActor(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, "surname");
+        String surnameActor = readText(parser);
+        parser.require(XmlPullParser.END_TAG, ns, "surname");
+        return  surnameActor;
     }
 
     // For the tags title and runningTime, country, director their text values.

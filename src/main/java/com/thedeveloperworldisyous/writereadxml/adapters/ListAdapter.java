@@ -69,7 +69,11 @@ public class ListAdapter extends BaseAdapter {
             stringBuilder.append(castList.get(i).getName());
             stringBuilder.append(" ");
             stringBuilder.append(castList.get(i).getSurname());
-            stringBuilder.append(", ");
+            if ((i+1)==castList.size()){
+                stringBuilder.append("...");
+            } else {
+                stringBuilder.append(", ");
+            }
         }
         holder.cast.setText(stringBuilder.toString());
 

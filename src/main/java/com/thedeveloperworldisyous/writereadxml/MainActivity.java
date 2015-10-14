@@ -351,10 +351,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 nameActor = readNameActor(parser);
             } else if(nameParser.equals("surname")) {
                 surnameActor = readSurnameActor(parser);
+                listActor.add(new Actor(nameActor, surnameActor));
             } else {
                 skip(parser);
             }
-            listActor.add(new Actor(nameActor, surnameActor));
+
         }
         return listActor;
     }

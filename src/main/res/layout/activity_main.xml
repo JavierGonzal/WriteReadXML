@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="@string/activity_main_add_film"/>
+        android:text="@string/dialog_add_film"/>
 
     <Button
         android:id="@+id/activity_main_write"

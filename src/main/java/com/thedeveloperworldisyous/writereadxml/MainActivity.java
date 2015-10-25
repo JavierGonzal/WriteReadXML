@@ -27,6 +27,7 @@ import android.os.Message;
 import android.text.InputType;
 import android.util.Log;
 import android.util.Xml;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -414,30 +415,16 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     public void getDialogAddFilm()
     {
-        LinearLayout layout = new LinearLayout(this);
-        TextView tvMessage = new TextView(this);
-        final EditText etTitle = new EditText(this);
 
-        // add LayoutParams
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        params.setMargins(30, 20, 30, 0);
+        LayoutInflater inflater = getLayoutInflater();
 
-        tvMessage.setText(getString(R.string.activity_main_add_film_title));
-        tvMessage.setLayoutParams(params);
-
-        etTitle.setSingleLine();
-        etTitle.setLayoutParams(params);
-        etTitle.setSelection(etTitle.getText().length());
-
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.addView(tvMessage);
-        layout.addView(etTitle);
+        View view = inflater.inflate(R.layout.dialog_film,null);
+        final EditText etTitle = (EditText) view.findViewById(R.id.dialog_film_title_et);
+        final EditText etDirector = (EditText) view.findViewById(R.id.dialog_film_director_et);
 
         final AlertDialog alert = new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.activity_main_add_film))
-                .setView(layout)
+                .setTitle(getString(R.string.dialog_add_film))
+                .setView(view)
                 .setPositiveButton(getString(android.R.string.ok), null)
                 .setCancelable(false)
                 .create();
@@ -451,10 +438,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
                     @Override
                     public void onClick(View arg0) {
-                        // Get the number entered removing all the whitespace
-                        String title = etTitle.getText().toString().replace(" ", "");
+                        String title = etTitle.getText().toString();
+                        String directorString = etDirector.getText().toString();
 
-                        if (!title.isEmpty()) {
+                        if (!title.isEmpty()&&!directorString.isEmpty()) {
                             Actor actor1 = new Actor("Al", "Pacino");
                             Actor actor2 = new Actor(" Steven", "Bauer");
                             Actor actor3 = new Actor("Michelle", "Pfeiffer");
@@ -464,13 +451,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
                             castScarface.add(actor2);
                             castScarface.add(actor3);
                             castScarface.add(actor4);
-                            Film filmDialog = new Film(title, "163 min.", "USA", "Brian De Palma", castScarface);
+                            Film filmDialog = new Film(title, "163 min.", "USA", directorString, castScarface);
                             mListFilms.add(filmDialog);
                             alert.dismiss();
 
                         }
                         else {
-                            Toast.makeText(getBaseContext(), getString(R.string.activity_main_add_film_empty_fild), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), getString(R.string.dialog_add_film_empty_fild), Toast.LENGTH_SHORT).show();
                         }
 
                     }

@@ -35,7 +35,7 @@ import com.thedeveloperworldisyous.writereadxml.utils.Work;
 
 public class MainActivity extends Activity implements View.OnClickListener{
 
-    private static String sOutPutfile = "Android/data/Films.xml";
+    private static String sOutPutfile = "Films.xml";
 
     private File mPdfFileOutPut;
     // We don't use namespaces
@@ -62,9 +62,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
             Log.d("Main","External Storage not available or you don't have permission to write");
 
         } else {
-            mPdfFileOutPut = new File(Environment.getExternalStorageDirectory(),
-                    sOutPutfile);
-
+//            mPdfFileOutPut = new File(sOutPutfile);
+//            mPdfFileOutPut = new File(getApplicationContext().getFileStreamPath("FileName.xml")
+//                    .getPath());
+            mPdfFileOutPut = new File(getFileStreamPath(sOutPutfile).getPath());
         }
 
     }

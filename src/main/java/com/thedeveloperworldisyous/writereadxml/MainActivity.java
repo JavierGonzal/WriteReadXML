@@ -74,9 +74,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
             Log.d("Main","External Storage not available or you don't have permission to write");
 
         } else {
-//            mPdfFileOutPut = new File(sOutPutfile);
-//            mPdfFileOutPut = new File(getApplicationContext().getFileStreamPath("FileName.xml")
-//                    .getPath());
+            mFileOutPut = new File(getFileStreamPath(sOutPutfile).getPath());
 
         }
         createFilms();
@@ -132,9 +130,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 
         try {
-            mFileOutPut = new File(getFileStreamPath(getNameFile()).getPath());
-            FileOutputStream fileWrite = new FileOutputStream(mFileOutPut);
-
+            FileOutputStream fileOutputStream = new FileOutputStream(mFileOutPut);
             XmlSerializer xmlSerializer = Xml.newSerializer();
             StringWriter writer = new StringWriter();
 
@@ -142,14 +138,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
             xmlSerializer.startDocument("UTF-8", true);
             xmlSerializer.startTag(null, "doc");
 
-            insertFilms(xmlSerializer,createFilms());
+            insertFilms(xmlSerializer, films);
 
             xmlSerializer.endTag(ns, "doc");
             xmlSerializer.endDocument();
             xmlSerializer.flush();
             String dataWrite = writer.toString();
-            fileWrite.write(dataWrite.getBytes());
-            fileWrite.close();
+            fileOutputStream.write(dataWrite.getBytes());
+            fileOutputStream.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -483,9 +479,5 @@ public class MainActivity extends Activity implements View.OnClickListener{
         });
         alert.show();
     }
-    public String getNameFile(){
-        Calendar c = Calendar.getInstance();
-        int milliSeconds = c.get(Calendar.MILLISECOND);
-        return String.valueOf(milliSeconds);
-    }
+
 }

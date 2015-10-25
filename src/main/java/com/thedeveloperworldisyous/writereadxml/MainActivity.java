@@ -11,21 +11,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.thedeveloperworldisyous.writereadxml.adapters.ListAdapter;
 import com.thedeveloperworldisyous.writereadxml.models.Actor;
@@ -36,13 +44,15 @@ import com.thedeveloperworldisyous.writereadxml.utils.Work;
 public class MainActivity extends Activity implements View.OnClickListener{
 
     private static String sOutPutfile = "Films.xml";
+    private File mFileOutPut;
 
-    private File mPdfFileOutPut;
     // We don't use namespaces
     private static final String ns = null;
 
     private Button mReadButton;
     private ListView mListView;
+    private Button mWriteButton;
+    private List<Film> mListFilms;
 
 
     @Override
@@ -50,11 +60,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Button writeButton = (Button) findViewById(R.id.activity_main_write);
+        Button addFilm = (Button) findViewById(R.id.activity_main_add_film);
+        mWriteButton = (Button) findViewById(R.id.activity_main_write);
         mReadButton = (Button) findViewById(R.id.activity_main_read);
         mListView = (ListView) findViewById(R.id.activity_main_list);
 
-        writeButton.setOnClickListener(this);
+        addFilm.setOnClickListener(this);
+        mWriteButton.setOnClickListener(this);
         mReadButton.setOnClickListener(this);
 
         // check if external storage is available so that we can dump our PDF file there
@@ -65,8 +77,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 //            mPdfFileOutPut = new File(sOutPutfile);
 //            mPdfFileOutPut = new File(getApplicationContext().getFileStreamPath("FileName.xml")
 //                    .getPath());
-            mPdfFileOutPut = new File(getFileStreamPath(sOutPutfile).getPath());
+
         }
+        createFilms();
 
     }
 
@@ -108,18 +121,19 @@ public class MainActivity extends Activity implements View.OnClickListener{
         castAfrica.add(actor41);
         Film filmAfrica = new Film("Out of Africa", "160 min.", "USA", "Sydney Pollack", castAfrica);
 
-        List<Film> listFilms = new ArrayList<Film>();
-        listFilms.add(filmScarface);
-        listFilms.add(filmHitman);
-        listFilms.add(filmAfrica);
-        return listFilms;
+        mListFilms = new ArrayList<Film>();
+        mListFilms.add(filmScarface);
+        mListFilms.add(filmHitman);
+        mListFilms.add(filmAfrica);
+        return mListFilms;
     }
 
     public void writeXml(List<Film> films) {
 
 
         try {
-            FileOutputStream fileWrite = new FileOutputStream(mPdfFileOutPut);
+            mFileOutPut = new File(getFileStreamPath(getNameFile()).getPath());
+            FileOutputStream fileWrite = new FileOutputStream(mFileOutPut);
 
             XmlSerializer xmlSerializer = Xml.newSerializer();
             StringWriter writer = new StringWriter();
@@ -209,14 +223,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         Message message = new Message();
         switch (v.getId()) {
+            case R.id.activity_main_add_film:
+                getDialogAddFilm();
+                mWriteButton.setEnabled(true);
+                break;
+
             case R.id.activity_main_write:
-
-
                 message.what = Work.WRITE_XML;
                 handler.sendMessage(message);
-
-
-
                 mReadButton.setEnabled(true);
                 break;
 
@@ -236,7 +250,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     break;
 
                 case Work.WRITE_XML:
-                    writeXml(createFilms());
+                    writeXml(mListFilms);
                     break;
             }
         }
@@ -245,7 +259,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     public void readFilm() {
         try {
 
-            InputStream inputStream = new FileInputStream(mPdfFileOutPut);
+            InputStream inputStream = new FileInputStream(mFileOutPut);
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(inputStream, null);
@@ -399,5 +413,79 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     break;
             }
         }
+    }
+
+
+    public void getDialogAddFilm()
+    {
+        LinearLayout layout = new LinearLayout(this);
+        TextView tvMessage = new TextView(this);
+        final EditText etTitle = new EditText(this);
+
+        // add LayoutParams
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        params.setMargins(30, 20, 30, 0);
+
+        tvMessage.setText(getString(R.string.activity_main_add_film_title));
+        tvMessage.setLayoutParams(params);
+
+        etTitle.setSingleLine();
+        etTitle.setLayoutParams(params);
+        etTitle.setSelection(etTitle.getText().length());
+
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(tvMessage);
+        layout.addView(etTitle);
+
+        final AlertDialog alert = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.activity_main_add_film))
+                .setView(layout)
+                .setPositiveButton(getString(android.R.string.ok), null)
+                .setCancelable(false)
+                .create();
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface arg0) {
+
+                Button okButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
+                okButton.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View arg0) {
+                        // Get the number entered removing all the whitespace
+                        String title = etTitle.getText().toString().replace(" ", "");
+
+                        if (!title.isEmpty()) {
+                            Actor actor1 = new Actor("Al", "Pacino");
+                            Actor actor2 = new Actor(" Steven", "Bauer");
+                            Actor actor3 = new Actor("Michelle", "Pfeiffer");
+                            Actor actor4 = new Actor("Mary Elizabeth", "Mastrantonio");
+                            List<Actor> castScarface = new ArrayList<Actor>();
+                            castScarface.add(actor1);
+                            castScarface.add(actor2);
+                            castScarface.add(actor3);
+                            castScarface.add(actor4);
+                            Film filmDialog = new Film(title, "163 min.", "USA", "Brian De Palma", castScarface);
+                            mListFilms.add(filmDialog);
+                            alert.dismiss();
+
+                        }
+                        else {
+                            Toast.makeText(getBaseContext(), getString(R.string.activity_main_add_film_empty_fild), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+            }
+        });
+        alert.show();
+    }
+    public String getNameFile(){
+        Calendar c = Calendar.getInstance();
+        int milliSeconds = c.get(Calendar.MILLISECOND);
+        return String.valueOf(milliSeconds);
     }
 }

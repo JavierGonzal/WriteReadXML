@@ -5,4 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="activity_main_write">Write</string>
     <string name="activity_main_read">Read</string>
+    <string name="activity_main_add_film">Add film</string>
+    <string name="activity_main_add_film_title">Add title film</string>
+    <string name="activity_main_add_film_empty_fild">Empty film</string>
 </resources>

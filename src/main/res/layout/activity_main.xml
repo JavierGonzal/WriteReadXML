@@ -8,11 +8,20 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/activity_main_add_film"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/activity_main_add_film"/>
+
+    <Button
         android:id="@+id/activity_main_write"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="@string/activity_main_write"/>
+        android:layout_below="@+id/activity_main_add_film"
+        android:text="@string/activity_main_write"
+        android:enabled="false"/>
 
     <Button
         android:id="@+id/activity_main_read"

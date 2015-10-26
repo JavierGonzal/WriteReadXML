@@ -7,15 +7,17 @@
         android:id="@+id/row_list_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/titleText">
-    </TextView>
-
+        style="@style/titleText"/>
     <TextView
         android:id="@+id/row_list_director"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/normalText">
-    </TextView>
+        style="@style/normalText"/>
+    <TextView
+        android:id="@+id/row_list_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/normalText"/>
     <TextView
         android:id="@+id/row_list_cast"
         android:layout_width="match_parent"

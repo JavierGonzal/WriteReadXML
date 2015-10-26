@@ -16,7 +16,8 @@
         <EditText
             android:id="@+id/dialog_film_title_et"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +32,8 @@
         <EditText
             android:id="@+id/dialog_film_director_et"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,7 +48,8 @@
         <EditText
             android:id="@+id/dialog_film_country_et"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"/>
 
     </LinearLayout>
 

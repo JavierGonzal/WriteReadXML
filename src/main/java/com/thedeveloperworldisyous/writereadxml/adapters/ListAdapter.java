@@ -53,6 +53,7 @@ public class ListAdapter extends BaseAdapter {
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.title = (TextView) rowView.findViewById(R.id.row_list_title);
             viewHolder.director = (TextView) rowView.findViewById(R.id.row_list_director);
+            viewHolder.country = (TextView) rowView.findViewById(R.id.row_list_country);
             viewHolder.cast = (TextView) rowView.findViewById(R.id.row_list_cast);
             rowView.setTag(viewHolder);
         }
@@ -61,7 +62,7 @@ public class ListAdapter extends BaseAdapter {
         ViewHolder holder = (ViewHolder) rowView.getTag();
         holder.title.setText(mListFilm.get(position).getTitle());
         holder.director.setText(mListFilm.get(position).getDirector());
-
+        holder.country.setText(mListFilm.get(position).getCountry());
 
         StringBuilder stringBuilder = new StringBuilder();
         List<Actor> castList = mListFilm.get(position).getCast();

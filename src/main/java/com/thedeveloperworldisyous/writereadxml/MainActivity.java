@@ -418,9 +418,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         LayoutInflater inflater = getLayoutInflater();
 
-        View view = inflater.inflate(R.layout.dialog_film,null);
+        View view = inflater.inflate(R.layout.dialog_film, null);
         final EditText etTitle = (EditText) view.findViewById(R.id.dialog_film_title_et);
         final EditText etDirector = (EditText) view.findViewById(R.id.dialog_film_director_et);
+        final EditText etCountry = (EditText) view.findViewById(R.id.dialog_film_country_et);
 
         final AlertDialog alert = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.dialog_add_film))
@@ -440,8 +441,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     public void onClick(View arg0) {
                         String title = etTitle.getText().toString();
                         String directorString = etDirector.getText().toString();
+                        String country = etCountry.getText().toString();
 
-                        if (!title.isEmpty()&&!directorString.isEmpty()) {
+                        if (!title.isEmpty() && !directorString.isEmpty() && !country.isEmpty()) {
                             Actor actor1 = new Actor("Al", "Pacino");
                             Actor actor2 = new Actor(" Steven", "Bauer");
                             Actor actor3 = new Actor("Michelle", "Pfeiffer");
@@ -451,7 +453,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                             castScarface.add(actor2);
                             castScarface.add(actor3);
                             castScarface.add(actor4);
-                            Film filmDialog = new Film(title, "163 min.", "USA", directorString, castScarface);
+                            Film filmDialog = new Film(title, "163 min.", country, directorString, castScarface);
                             mListFilms.add(filmDialog);
                             alert.dismiss();
 

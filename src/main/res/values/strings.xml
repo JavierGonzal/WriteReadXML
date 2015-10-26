@@ -9,4 +9,5 @@
     <string name="dialog_add_film_title">Add title film:</string>
     <string name="dialog_add_film_empty_fild">Empty film</string>
     <string name="dialog_add_film_director">Add director:</string>
+    <string name="dialog_add_film_country">Add country:</string>
 </resources>
